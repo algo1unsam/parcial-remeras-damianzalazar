@@ -1,0 +1,46 @@
+import comercio.*
+import remeras.*
+
+describe "Sistema Aministrador de Remeras" {
+	
+	const disney = new MarcaComercial()
+	const avellaneda = new Sucursal(cantMinRemeras = 3)
+	const remeraLisa1 = new RemeraLisa()
+	const remeraBordada1 = new RemeraBordada()
+	const remeraBordada2 = new RemeraBordada()
+	const remeraSublimada1 = new RemeraSublimada(dibujo = disney)
+	const remeraSublimada2 = new RemeraSublimada(dibujo = disney)
+	const pedido1 = new Pedido(sucursal = avellaneda)
+	const pedido2 = new Pedido(sucursal = avellaneda)
+
+	fixture {
+		remeraBordada1.agregar(negro)
+		remeraBordada2.agregar(negro)
+		pedido1.agregar([remeraBordada1,remeraBordada2])
+		pedido2.agregar([remeraSublimada1,remeraSublimada2])
+		comercio.agregarPedido(pedido1)
+		comercio.agregarPedido(pedido2)
+		comercio.agregarMarcaAConvenio(disney)
+	}
+
+	test "El costo de una remera bordada es de 80 " {
+		assert.equals(80, remeraLisa1.costo())
+	}
+
+	test "El costo de una remera bordada es de 100" {
+		assert.equals(100, remeraBordada1.costo())
+	}
+	
+	test "El costo de una remera sublimada es de 100" {
+		assert.equals(192.5, remeraSublimada1.costo())
+	}
+	
+	test "El pedido1 tiene remeras bordadas y su precio total es de 200"{
+		assert.equals(200,pedido1.precio())
+	}
+	
+	test "El pedido2 tiene remeras sublimadas y su precio total es de 200"{
+		assert.equals(385,pedido2.precio())
+	}	
+}
+
